@@ -1,0 +1,204 @@
+---
+# RabbitMQ Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:3-management
+        ports:
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 15672
+          name: management
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: "guest"
+        - name: RABBITMQ_DEFAULT_PASS
+          value: "guest"
+---
+# RabbitMQ Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+  - protocol: TCP
+    port: 5672
+    targetPort: 5672
+    name: amqp
+  - protocol: TCP
+    port: 15672
+    targetPort: 15672
+    name: management
+---
+# Suitor Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: suitor-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: suitor-service
+  template:
+    metadata:
+      labels:
+        app: suitor-service
+    spec:
+      containers:
+      - name: suitor-service
+        image: suitor-service:latest
+        imagePullPolicy: Never
+---
+# Girl Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: girl-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: girl-service
+  template:
+    metadata:
+      labels:
+        app: girl-service
+    spec:
+      containers:
+      - name: girl-service
+        image: girl-service:latest
+        imagePullPolicy: Never
+---
+# Mom Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mom-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mom-service
+  template:
+    metadata:
+      labels:
+        app: mom-service
+    spec:
+      containers:
+      - name: mom-service
+        image: mom-service:latest
+        imagePullPolicy: Never
+---
+# Dad Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dad-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dad-service
+  template:
+    metadata:
+      labels:
+        app: dad-service
+    spec:
+      containers:
+      - name: dad-service
+        image: dad-service:latest
+        imagePullPolicy: Never
+---
+# BigBro Service Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bigbro-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bigbro-service
+  template:
+    metadata:
+      labels:
+        app: bigbro-service
+    spec:
+      containers:
+      - name: bigbro-service
+        image: bigbro-service:latest
+        imagePullPolicy: Never
+---
+# Love Coordinator Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: love-coordinator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: love-coordinator
+  template:
+    metadata:
+      labels:
+        app: love-coordinator
+    spec:
+      containers:
+      - name: love-coordinator
+        image: love-coordinator:latest
+        imagePullPolicy: Never
+---
+# Love Dashboard Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: love-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: love-dashboard
+  template:
+    metadata:
+      labels:
+        app: love-dashboard
+    spec:
+      containers:
+      - name: love-dashboard
+        image: love-dashboard:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+---
+# Love Dashboard Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: love-dashboard
+spec:
+  type: NodePort
+  selector:
+    app: love-dashboard
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000
+    nodePort: 30000
